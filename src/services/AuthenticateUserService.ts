@@ -2,6 +2,7 @@ import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import { getRepository, Repository } from 'typeorm';
 import User from '../models/User';
+import authConfig from '../config/auth';
 
 type Request = {
     email: string;
@@ -31,9 +32,11 @@ class AuthenticateUserService {
         const user = await this.userExists({ email });
         await this.passwordIsEqual({ password, user });
 
-        const token = sign({}, 'bc1d2942a496a25a8a89215ebc7e864b', {
+        const { secret, expiresIn } = authConfig.jwt;
+
+        const token = sign({}, secret, {
             subject: user.id,
-            expiresIn: '1d',
+            expiresIn,
         });
 
         return { user, token };
