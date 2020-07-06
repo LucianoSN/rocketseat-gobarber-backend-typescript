@@ -7,6 +7,7 @@ import AllAppointmentService from '../services/AllAppointmentService';
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 const appointmentsRouter = Router();
+
 appointmentsRouter.use(ensureAuthenticated);
 
 appointmentsRouter.get('/', async (request, response) => {
