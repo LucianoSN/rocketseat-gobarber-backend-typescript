@@ -1,6 +1,7 @@
 import { hash } from 'bcryptjs';
 import { getRepository, Repository } from 'typeorm';
 import User from '../models/User';
+import AppError from '../errors/AppError';
 
 type Request = {
     name: string;
@@ -37,7 +38,7 @@ class CreateUserService {
         });
 
         if (exists) {
-            throw new Error('Email address already used.');
+            throw new AppError('Email address already used.');
         }
     };
 }

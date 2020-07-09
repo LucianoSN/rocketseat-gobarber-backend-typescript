@@ -3,6 +3,7 @@ import { sign } from 'jsonwebtoken';
 import { getRepository, Repository } from 'typeorm';
 import User from '../models/User';
 import authConfig from '../config/auth';
+import AppError from '../errors/AppError';
 
 type Request = {
     email: string;
@@ -50,7 +51,7 @@ class AuthenticateUserService {
         });
 
         if (!user) {
-            throw new Error(ERROR_MESSAGE);
+            throw new AppError(ERROR_MESSAGE, 401);
         }
 
         return user;
@@ -63,7 +64,7 @@ class AuthenticateUserService {
         const passwordMatch = await compare(password, user.password);
 
         if (!passwordMatch) {
-            throw new Error(ERROR_MESSAGE);
+            throw new AppError(ERROR_MESSAGE, 401);
         }
     };
 }
